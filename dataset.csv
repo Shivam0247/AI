@@ -1,0 +1,11 @@
+Price,Area_sqft,Bedrooms,Bathrooms,Age_years,Location,House_Type
+350000,1500,3,2,5,Urban,Detached
+450000,2000,4,3,10,Suburban,Attached
+550000,2200,5,4,8,Urban,Detached
+250000,1200,2,1,15,Rural,Detached
+300000,1400,3,2,6,Suburban,Attached
+600000,2500,5,5,12,Urban,Detached
+400000,1800,4,2,7,Urban,Attached
+200000,1000,2,1,20,Rural,Detached
+350000,1600,3,2,9,Suburban,Detached
+500000,2100,4,3,5,Urban,Attached

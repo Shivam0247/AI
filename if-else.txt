@@ -1,0 +1,6 @@
+grade(Marks) :-
+    ( Marks >= 90 -> write('Grade: A')
+    ; Marks >= 75 -> write('Grade: B')
+    ; Marks >= 60 -> write('Grade: C')
+    ; write('Grade: Fail')
+    ).

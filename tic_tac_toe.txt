@@ -1,0 +1,105 @@
+% --- Starting the game ---
+start_game :-
+    empty_board(Board),
+    play_game(Board).
+
+% --- Empty board state ---
+empty_board([[' ', ' ', ' '], [' ', ' ', ' '], [' ', ' ', ' ']]).
+
+% --- Display the board ---
+display_board(Board) :-
+    nl,
+    write(' '), write(Board[0][0]), write(' | '), write(Board[0][1]), write(' | '), write(Board[0][2]), nl,
+    write('---+---+---'), nl,
+    write(' '), write(Board[1][0]), write(' | '), write(Board[1][1]), write(Board[1][2]), nl,
+    write('---+---+---'), nl,
+    write(' '), write(Board[2][0]), write(' | '), write(Board[2][1]), write(' | '), write(Board[2][2]), nl.
+
+% --- Playing the game ---
+play_game(Board) :-
+    display_board(Board),
+    (game_over(Board) -> 
+        nl, write('Game over!'), nl;
+        (
+            player_move(Board, NewBoard),
+            play_game(NewBoard)
+        )
+    ).
+
+% --- Player's move ---
+player_move(Board, NewBoard) :-
+    write('Enter row (1-3): '),
+    read(Row),
+    write('Enter column (1-3): '),
+    read(Col),
+    valid_move(Board, Row, Col),
+    make_move(Board, Row, Col, 'X', NewBoard).
+
+% --- Valid move check ---
+valid_move(Board, Row, Col) :-
+    Row >= 1, Row =< 3,
+    Col >= 1, Col =< 3,
+    nth1(Row, Board, RowList),
+    nth1(Col, RowList, Cell),
+    Cell == ' '.
+
+% --- Make the move ---
+make_move(Board, Row, Col, Player, NewBoard) :-
+    nth1(Row, Board, RowList),
+    replace(RowList, Col, Player, NewRowList),
+    replace(Board, Row, NewRowList, NewBoard).
+
+% --- Replacing an element in a list ---
+replace([_|T], 1, X, [X|T]).
+replace([H|T], N, X, [H|R]) :-
+    N > 1,
+    N1 is N - 1,
+    replace(T, N1, X, R).
+
+% --- Game Over check ---
+game_over(Board) :-
+    (check_win(Board, 'X') -> 
+        display_board(Board),
+        write('Player X wins!'), nl;
+    check_win(Board, 'O') -> 
+        display_board(Board),
+        write('Player O wins!'), nl;
+    is_board_full(Board) -> 
+        display_board(Board),
+        write('It\'s a tie!'), nl).
+
+% --- Check if a player has won ---
+check_win(Board, Player) :-
+    (check_rows(Board, Player);
+    check_columns(Board, Player);
+    check_diagonals(Board, Player)).
+
+% --- Check rows for a win ---
+check_rows(Board, Player) :-
+    member(Row, Board),
+    Row = [Player, Player, Player].
+
+% --- Check columns for a win ---
+check_columns(Board, Player) :-
+    transpose(Board, Transposed),
+    member(Row, Transposed),
+    Row = [Player, Player, Player].
+
+% --- Check diagonals for a win ---
+check_diagonals(Board, Player) :-
+    Board = [[Player, _, _], [_, Player, _], [_, _, Player]];
+    Board = [[_, _, Player], [_, Player, _], [Player, _, _]].
+
+% --- Transpose a matrix ---
+transpose([[]|_], []).
+transpose(Matrix, [Row|Rows]) :-
+    maplist(list_first_element, Matrix, Row, Rest),
+    transpose(Rest, Rows).
+
+% --- Extract first element from each sublist ---
+list_first_element([Head|_], Head, Rest) :- maplist(tail, [Rest]).
+tail([_|T], T).
+
+% --- Check if board is full ---
+is_board_full(Board) :-
+    \+ (member(Row, Board), member(' ', Row)).

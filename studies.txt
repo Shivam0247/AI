@@ -1,0 +1,10 @@
+studies(raj,cse).
+studies(sachin,ce).
+studies(john,me).
+studies(marry,cse).
+teaches(neetu,cse).
+teaches(cherry,ce).
+teaches(ram,me).
+teaches(rahul,ec).
+professor(X,Y) :- teaches(X,C), studies(Y,C).
+
