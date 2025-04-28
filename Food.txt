@@ -1,0 +1,13 @@
+food(sandwich).
+food(burger).
+food(pizza).
+
+lunch(burger).
+lunch(sandwich).
+dinner(pizza).
+
+meal(X) :- food(X).
+
+
+
+Run : meal(X), lunch(X).

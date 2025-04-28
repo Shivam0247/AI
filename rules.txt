@@ -1,0 +1,10 @@
+professors(kirker, charlie).
+professors(johnson, [david, emily, frank]).
+professors(smith, [george, hannah, ivy]).
+
+student_of(Professor, Student) :-
+    professors(Professor, Students),
+    member(Student, Students).
+
+
+Run : professors(kirker, Students).
